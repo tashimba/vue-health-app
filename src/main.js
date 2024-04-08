@@ -11,6 +11,9 @@ import "@mdi/font/css/materialdesignicons.css";
 
 import router from "./router/router.js";
 
+import { useFoodStore } from "./stores/useFoodStore.js";
+import { useDaysStore } from "./stores/useDaysStore.js";
+
 const vuetify = createVuetify({
   components,
   directives,
@@ -19,3 +22,6 @@ const vuetify = createVuetify({
 const pinia = createPinia();
 
 createApp(App).use(vuetify).use(router).use(pinia).mount("#app");
+
+export const foodStore = useFoodStore();
+export const daysStore = useDaysStore();

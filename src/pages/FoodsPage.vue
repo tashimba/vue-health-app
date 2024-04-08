@@ -1,7 +1,5 @@
-<template lang="">
+<template>
   <div>foods</div>
 </template>
-<script>
-export default {};
-</script>
-<style lang=""></style>
+<script setup></script>
+<style></style>

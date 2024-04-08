@@ -2,7 +2,9 @@
   <div style="display: flex; justify-content: center; padding: 15px 0">
     <div style="">
       <div class="text-h4" style="margin-bottom: 10px">Дневной рацион</div>
-      <div class="text-h5" style="margin-bottom: 40px">07.04.2024</div>
+      <div class="text-h5" style="margin-bottom: 40px">
+        {{ daysStore.activeDay }}
+      </div>
 
       <v-card class="mx-auto" style="width: 400px; padding: 5px" variant="flat">
         <v-card
@@ -27,7 +29,7 @@
                 :value="title"
               ></v-list-item>
               <v-card-actions style="display: flex; justify-content: center">
-                <v-btn variant="outlined" block> Добавить</v-btn>
+                <ModalAddFood :meal="meal.title"></ModalAddFood>
               </v-card-actions>
             </v-list-group>
           </v-list>
@@ -39,6 +41,10 @@
 
 <script setup>
 import { reactive } from "vue";
+import ModalAddFood from "./ModalAddFood.vue";
+
+import { daysStore } from "../main.js";
+
 const meals = reactive([
   { title: "Завтрак", food: ["Овсянка", "Сэндвич"] },
   { title: "Обед", food: ["Овсянка", "Сэндвич"] },
