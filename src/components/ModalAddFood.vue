@@ -18,6 +18,7 @@ import { daysStore } from "../main.js";
 
 const props = defineProps(["meal"]);
 
+const emit = defineEmits(["refresh"]);
 const dialog = ref(false);
 const choosenFood = ref("");
 
@@ -25,11 +26,9 @@ function addMeal() {
   const addingFood = {
     foodName: choosenFood.value,
     meal: props.meal,
-    day: daysStore.activeDay,
   };
-  console.log(addingFood);
-
   daysStore.addMealOnDate(addingFood);
+  // emit("refresh");
 }
 </script>
 <style></style>

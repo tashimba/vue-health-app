@@ -23,27 +23,29 @@
               </template>
 
               <v-list-item
-                v-for="(curFood, j) in currentDay?.value?.meals[i]?.food"
+                v-if="currentDay?.meals"
+                v-for="(curFood, j) in currentDay?.meals[i]?.food"
                 :key="j"
                 :title="curFood.name"
                 :value="curFood.name"
               ></v-list-item>
+
               <v-card-actions style="display: flex; justify-content: center">
-                <ModalAddFood :meal="meal.name"></ModalAddFood>
+                <ModalAddFood :meal="i"></ModalAddFood>
               </v-card-actions>
             </v-list-group>
           </v-list>
         </v-card>
-        <v-btn v-if="!currentDay || currentDay?.meals?.length < 3"
+        <!-- <v-btn v-if="!currentDay || currentDay?.meals?.length < 3"
           >Добавить прием</v-btn
-        >
+        > -->
       </v-card>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import ModalAddFood from "./ModalAddFood.vue";
 
 import { daysStore } from "../main.js";
@@ -51,15 +53,14 @@ import parseDate from "../functions/parseDayTo_DD-MM-YYYY";
 import { storeToRefs } from "pinia";
 
 const currentDay = ref(new Object());
+const refreshKey = ref(0);
 
 const { activeDay } = storeToRefs(daysStore);
+
 watch(activeDay, (newValue) => {
   currentDay.value = daysStore.days.find((day) => {
     if (day.day.getTime() === newValue.getTime()) return day;
   });
-  for (let i = 0; i < 3; i++) {
-    console.log(currentDay?.value?.meals[i]?.food[0]?.name);
-  }
 });
 
 const mealNames = ["Завтрак", "Обед", "Ужин"];
