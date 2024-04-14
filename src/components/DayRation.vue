@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex; justify-content: center; padding: 15px 0">
-    <div style="">
+    <div v-if="daysStore.activeDay">
       <div class="text-h4" style="margin-bottom: 10px">Дневной рацион</div>
       <div class="text-h5" style="margin-bottom: 40px">
         {{ parseDate(daysStore.activeDay) }}
@@ -12,23 +12,36 @@
           style="margin-bottom: 5px"
           variant="outlined"
         >
-          <v-list style="padding: 10px">
+          <v-list style="padding: 10px" density="compact">
             <v-list-group>
               <template v-slot:activator="{ props }">
                 <v-list-item v-bind="props">
                   <v-list-item-title class="text-h6">{{
-                    mealNames[i]
+                    meal
                   }}</v-list-item-title>
                 </v-list-item>
               </template>
 
+              <v-divider :thickness="1" class="border-opacity-25" />
+
               <v-list-item
                 v-if="currentDay?.meals"
-                v-for="(curFood, j) in currentDay?.meals[i]?.food"
-                :key="j"
-                :title="curFood.name"
-                :value="curFood.name"
-              ></v-list-item>
+                style="margin: 10px 0"
+                v-for="curFood in currentDay?.meals[i]?.food"
+                :key="curFood.id"
+                :title="curFood.data.name"
+                :subtitle="curFood.weight + ' грамм'"
+                :value="curFood.data.name"
+              >
+                <template v-slot:append>
+                  <v-icon
+                    icon="mdi-close"
+                    @click.stop="
+                      daysStore.deleteMeal(currentDay.id, i, curFood.id)
+                    "
+                  ></v-icon>
+                </template>
+              </v-list-item>
 
               <v-card-actions style="display: flex; justify-content: center">
                 <ModalAddFood :meal="i"></ModalAddFood>
@@ -36,9 +49,6 @@
             </v-list-group>
           </v-list>
         </v-card>
-        <!-- <v-btn v-if="!currentDay || currentDay?.meals?.length < 3"
-          >Добавить прием</v-btn
-        > -->
       </v-card>
     </div>
   </div>
@@ -52,15 +62,20 @@ import { daysStore } from "../main.js";
 import parseDate from "../functions/parseDayTo_DD-MM-YYYY";
 import { storeToRefs } from "pinia";
 
-const currentDay = ref(new Object());
-const refreshKey = ref(0);
+const findCurrentDay = (dayParam) => {
+  currentDay.value = daysStore.days.find((day) => {
+    if (day.day.getTime() === dayParam.value.getTime()) return day;
+  });
+};
 
 const { activeDay } = storeToRefs(daysStore);
 
+const currentDay = ref(new Object());
+
+findCurrentDay(activeDay);
+
 watch(activeDay, (newValue) => {
-  currentDay.value = daysStore.days.find((day) => {
-    if (day.day.getTime() === newValue.getTime()) return day;
-  });
+  findCurrentDay(newValue);
 });
 
 const mealNames = ["Завтрак", "Обед", "Ужин"];

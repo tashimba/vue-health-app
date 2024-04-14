@@ -43,16 +43,22 @@ export const useDaysStore = defineStore("days", {
         //   ],
         // },
       ],
-      activeDay: new Date(
-        "Tue Apr 09 2024 00:00:00 GMT+0300 (Москва, стандартное время)"
-      ),
+      activeDay: undefined,
+      // new Date(
+      //   "Tue Apr 09 2024 00:00:00 GMT+0300 (Москва, стандартное время)"
+      // ),
     };
   },
 
   actions: {
-    openDay(day) {
+    setActiveDay(day) {
       this.activeDay = day;
+    },
+
+    openDay(day) {
       this.createDay(day);
+
+      this.activeDay = day;
     },
 
     createDay(day) {
@@ -73,7 +79,24 @@ export const useDaysStore = defineStore("days", {
       if (!day) day = this.createDay(this.activeDay);
 
       const foodValue = foodStore.getFoodByName(mealObj.foodName);
-      day.meals[mealObj.meal].food.push(foodValue);
+      const foodObj = {
+        id: Date.now(),
+        data: foodValue,
+        weight: mealObj.weight,
+      };
+      day.meals[mealObj.meal].food.push(foodObj);
+    },
+
+    deleteMeal(dayId, mealIter, foodId) {
+      console.log(dayId, mealIter, foodId);
+
+      const day = this.days.find((d) => d.id == dayId);
+      day.meals = day.meals.filter((meal, i) => {
+        if (i == mealIter) {
+          meal.food = meal.food.filter((food) => food.id != foodId);
+        }
+        return meal;
+      });
     },
   },
 });

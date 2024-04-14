@@ -11,7 +11,7 @@
 import { ref, watch } from "vue";
 import { daysStore } from "../main.js";
 
-const date = ref(new Date());
+const date = ref(daysStore.activeDay || new Date());
 
 watch(date, (newValue) => {
   daysStore.openDay(newValue);

@@ -1,13 +1,18 @@
 <template>
-  <div style="display: flex; padding: 20px 0; margin-left: 270px">
+  <div style="display: flex; padding: 20px" class="marginDrawer">
     <DatePicker></DatePicker>
-    <DayRation></DayRation>
+    <DayRation v-if="daysStore.activeDay"></DayRation>
   </div>
 </template>
 
 <script setup>
 import DatePicker from "../components/DatePicker.vue";
 import DayRation from "../components/DayRation.vue";
+import { daysStore } from "../main.js";
 </script>
 
-<style></style>
+<style>
+.marginDrawer {
+  margin-left: 260px;
+}
+</style>

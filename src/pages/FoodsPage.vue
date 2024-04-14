@@ -1,5 +1,7 @@
 <template>
-  <div>foods</div>
+  <FoodTable></FoodTable>
 </template>
-<script setup></script>
+<script setup>
+import FoodTable from "../components/FoodTable.vue";
+</script>
 <style></style>
