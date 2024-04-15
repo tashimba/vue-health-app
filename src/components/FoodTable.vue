@@ -1,9 +1,11 @@
 <template>
   <div class="marginDrawer foodTable">
-    <v-row>
-      <v-spacer></v-spacer>
+    <v-row align="center" style="height: 80px" no-gutters>
+      <v-col>
+        <ModalCreateFood></ModalCreateFood>
+      </v-col>
 
-      <v-col cols="5" align="center">
+      <v-col cols="4">
         <v-text-field
           label="Поиск"
           density="compact"
@@ -17,49 +19,53 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <v-table>
-      <thead>
-        <tr>
-          <th class="text-left">Название</th>
-          <th class="text-left">Калории</th>
-          <th class="text-left">Белки</th>
-          <th class="text-left">Жиры</th>
-          <th class="text-left">Углеводы</th>
-        </tr>
-      </thead>
 
-      <tbody>
-        <tr v-for="item in foodListFiltered" :key="item.name">
-          <td>{{ item.name }}</td>
-          <td>{{ item.calories }}</td>
-          <td>{{ item.proteins }}</td>
-          <td>{{ item.fats }}</td>
-          <td>{{ item.carbs }}</td>
-        </tr>
-      </tbody>
-    </v-table>
+    <v-data-table
+      :headers="headers"
+      :items="foodListFiltered"
+      :search="inputValue"
+    ></v-data-table>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, reactive, computed } from "vue";
+import { ref, computed } from "vue";
+import { storeToRefs } from "pinia";
 import { foodStore } from "../main";
+import ModalCreateFood from "./ModalCreateFood.vue";
 
 const inputValue = ref("");
+const { fieldWithTypes } = storeToRefs(foodStore);
 
-const foodList = reactive(foodStore.foodData);
+const headers = [
+  {
+    title: "Название",
+    key: "name",
+    width: "30%",
+  },
+  {
+    title: "Калории (кКал)",
+    key: "calories",
+  },
+  {
+    title: "Белки (гр)",
+    key: "proteins",
+  },
+  {
+    title: "Жиры (гр)",
+    key: "fats",
+  },
+  {
+    title: "Углеводы (гр)",
+    key: "carbs",
+  },
+];
 
 const foodListFiltered = computed(() => {
-  return foodList.filter((el) => el.name.includes(inputValue.value));
+  return fieldWithTypes.value.filter((el) =>
+    el.name.toLowerCase().includes(inputValue.value.toLowerCase())
+  );
 });
-
-const foodListFilter = () => {
-  return foodList.filter((el) => el.name.includes(inputValue.value));
-};
-
-// watch(inputValue, (newValue) => {
-//   foodList
-// });
 </script>
 
 <style>

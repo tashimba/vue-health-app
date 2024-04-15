@@ -62,22 +62,23 @@ import { daysStore } from "../main.js";
 import parseDate from "../functions/parseDayTo_DD-MM-YYYY";
 import { storeToRefs } from "pinia";
 
-const findCurrentDay = (dayParam) => {
-  currentDay.value = daysStore.days.find((day) => {
-    if (day.day.getTime() === dayParam.value.getTime()) return day;
-  });
-};
-
 const { activeDay } = storeToRefs(daysStore);
+const currentDay = ref(
+  daysStore.days.find(
+    (day) => day.day.getTime() === activeDay.value.getTime()
+  ) || new Object()
+);
 
-const currentDay = ref(new Object());
+const mealNames = ["Завтрак", "Обед", "Ужин"];
 
-findCurrentDay(activeDay);
+const findCurrentDay = (dayParam) => {
+  currentDay.value = daysStore.days.find(
+    (day) => day.day.getTime() === dayParam.getTime()
+  );
+};
 
 watch(activeDay, (newValue) => {
   findCurrentDay(newValue);
 });
-
-const mealNames = ["Завтрак", "Обед", "Ужин"];
 </script>
 <style></style>

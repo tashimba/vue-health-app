@@ -56,8 +56,8 @@ export const useDaysStore = defineStore("days", {
     },
 
     openDay(day) {
+      // this.days.map(el => el.day )
       this.createDay(day);
-
       this.activeDay = day;
     },
 

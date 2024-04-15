@@ -12,7 +12,7 @@ import { ref, watch } from "vue";
 import { daysStore } from "../main.js";
 
 const date = ref(daysStore.activeDay || new Date());
-
+daysStore.openDay(date);
 watch(date, (newValue) => {
   daysStore.openDay(newValue);
 });

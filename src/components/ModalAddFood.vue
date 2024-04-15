@@ -35,7 +35,7 @@ function addMeal() {
     weight: foodWeight.value,
   };
   daysStore.addMealOnDate(addingFood);
-  // emit("refresh");
+  dialog.value = false;
 }
 </script>
 <style></style>
