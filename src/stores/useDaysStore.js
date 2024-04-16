@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { foodStore } from "../main.js";
+import getDateString from "../functions/getDateString.js";
 
 export const useDaysStore = defineStore("days", {
   state: () => {
@@ -96,6 +97,69 @@ export const useDaysStore = defineStore("days", {
         }
         return meal;
       });
+    },
+
+    sumOfPFCForEachDay(date1, date2) {
+      const daysBetweenDates = this.getSortDaysBetweenDates(date1, date2);
+
+      const sumOfPFCForEachDay = daysBetweenDates.map((day) => {
+        const sumForDay = day.meals.reduce(
+          (acc, meal) => {
+            const sumForMeal = meal.food.reduce(
+              (accMeal, food) => {
+                const { proteins, carbs, fats } = food.data;
+                return {
+                  accProteins: accMeal.accProteins + parseInt(proteins),
+                  accCarbs: accMeal.accCarbs + parseInt(carbs),
+                  accFats: accMeal.accFats + parseInt(fats),
+                };
+              },
+              {
+                accProteins: 0,
+                accCarbs: 0,
+                accFats: 0,
+              }
+            );
+            return {
+              accProteins: acc.accProteins + sumForMeal.accProteins,
+              accCarbs: acc.accCarbs + sumForMeal.accCarbs,
+              accFats: acc.accFats + sumForMeal.accFats,
+            };
+          },
+          {
+            accProteins: 0,
+            accCarbs: 0,
+            accFats: 0,
+          }
+        );
+        return {
+          day: getDateString(day.day),
+          sum: {
+            proteins: sumForDay.accProteins,
+            carbs: sumForDay.accCarbs,
+            fats: sumForDay.accFats,
+          },
+        };
+      });
+      return sumOfPFCForEachDay;
+    },
+
+    sumOfCaloriesForEachDay(date1, date2) {
+      const daysBetweenDates = this.getSortDaysBetweenDates(date1, date2);
+      const sumOfCaloriesForEachDay = daysBetweenDates.map((day) => {
+        const sumForDay = day.meals.reduce((acc, meal) => {
+          const sumForMeal = meal.food.reduce((accMeal, food) => {
+            const { calories } = food.data;
+            return accMeal + parseInt(calories);
+          }, 0);
+          return acc + sumForMeal;
+        }, 0);
+        return {
+          day: getDateString(day.day),
+          calories: sumForDay,
+        };
+      });
+      return sumOfCaloriesForEachDay;
     },
   },
   getters: {

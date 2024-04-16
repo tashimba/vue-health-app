@@ -12,17 +12,26 @@
       </v-col>
     </v-row>
 
-    <BarChart
-      v-if="dateInputs.date1 && dateInputs.date2"
-      :dates="dateInputs"
-    ></BarChart>
-    <!-- <DoughnutChart></DoughnutChart> -->
+    <v-row>
+      <v-col>
+        <BarChartCcal
+          v-if="dateInputs.date1 && dateInputs.date2"
+          :dates="dateInputs"
+        ></BarChartCcal>
+      </v-col>
+      <v-col>
+        <BarChartPFC
+          v-if="dateInputs.date1 && dateInputs.date2"
+          :dates="dateInputs"
+        ></BarChartPFC>
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script setup>
-import BarChart from "../components/BarChart.vue";
+import BarChartCcal from "../components/BarChartCcal.vue";
+import BarChartPFC from "../components/BarChartPFC.vue";
 import { ref, reactive } from "vue";
-import DoughnutChart from "../components/DoughnutChart.vue";
 
 const dateInputs = reactive({
   date1: "",
