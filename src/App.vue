@@ -7,4 +7,11 @@
 import NavDrawer from "./components/NavDrawer.vue";
 </script>
 
-<style scoped></style>
+<style>
+.marginDrawer {
+  margin-left: 260px;
+}
+.paddingContent {
+  padding: 20px;
+}
+</style>

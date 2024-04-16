@@ -98,4 +98,16 @@ export const useDaysStore = defineStore("days", {
       });
     },
   },
+  getters: {
+    getSortDays() {
+      return this.days.sort((a, b) => a.day - b.day);
+    },
+    getSortDaysBetweenDates: (state) => {
+      return (date1, date2) => {
+        return state.days.filter(
+          (d) => d.day >= new Date(date1) && d.day <= new Date(date2)
+        );
+      };
+    },
+  },
 });
