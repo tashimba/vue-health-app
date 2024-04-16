@@ -3,7 +3,7 @@
     <div v-if="daysStore.activeDay">
       <div class="text-h4" style="margin-bottom: 10px">Дневной рацион</div>
       <div class="text-h5" style="margin-bottom: 40px">
-        {{ parseDate(daysStore.activeDay) }}
+        {{ parseDate(currentDay.day) }}
       </div>
 
       <v-card class="mx-auto" style="width: 400px; padding: 5px" variant="flat">

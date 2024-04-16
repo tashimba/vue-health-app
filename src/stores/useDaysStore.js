@@ -56,9 +56,9 @@ export const useDaysStore = defineStore("days", {
     },
 
     openDay(day) {
-      // this.days.map(el => el.day )
-      this.createDay(day);
-      this.activeDay = day;
+      if (this.days.find((d) => d.day.getTime() == day.getTime())) {
+        this.activeDay = day;
+      } else this.activeDay = this.createDay(day).day;
     },
 
     createDay(day) {
@@ -76,7 +76,6 @@ export const useDaysStore = defineStore("days", {
       let day = this.days.find(
         (d) => d.day.getTime() == this.activeDay.getTime()
       );
-      if (!day) day = this.createDay(this.activeDay);
 
       const foodValue = foodStore.getFoodByName(mealObj.foodName);
       const foodObj = {
