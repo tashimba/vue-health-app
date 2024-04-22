@@ -1,41 +1,38 @@
 <template>
-  <div class="marginDrawer foodTable">
-    <v-row align="center" style="height: 80px" no-gutters>
-      <v-col>
-        <ModalCreateFood></ModalCreateFood>
-      </v-col>
+  <v-row justify="center" style="height: 60px" no-gutters>
+    <v-col>
+      <ModalCreateFood></ModalCreateFood>
+    </v-col>
 
-      <v-col cols="4">
-        <v-text-field
-          label="Поиск"
-          density="compact"
-          clearable
-          v-model="inputValue"
-          @click:clear="inputValue = ''"
-        >
-          <template v-slot:append-inner>
-            <v-icon icon="mdi-magnify"></v-icon>
-          </template>
-        </v-text-field>
-      </v-col>
-    </v-row>
-
-    <v-data-table
-      :headers="headers"
-      :items="foodListFiltered"
-      :search="inputValue"
-    ></v-data-table>
-  </div>
+    <v-col cols="4">
+      <v-text-field
+        label="Поиск"
+        density="compact"
+        clearable
+        v-model="inputValue"
+        @click:clear="inputValue = ''"
+      >
+        <template v-slot:append-inner>
+          <v-icon icon="mdi-magnify"></v-icon>
+        </template>
+      </v-text-field>
+    </v-col>
+  </v-row>
+  <v-data-table
+    :headers="headers"
+    :items="newFoodListFiltered"
+    :search="inputValue"
+    density="compact"
+  ></v-data-table>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
-import { foodStore } from "../main";
 import ModalCreateFood from "./ModalCreateFood.vue";
 
 const inputValue = ref("");
-const { fieldWithTypes } = storeToRefs(foodStore);
+// const { fieldWithTypes } = storeToRefs(foodStore);
 
 const headers = [
   {
@@ -61,15 +58,19 @@ const headers = [
   },
 ];
 
-const foodListFiltered = computed(() => {
-  return fieldWithTypes.value.filter((el) =>
+import {
+  getFoodList,
+  getFoodByName,
+  createFood,
+  getFieldWithTypes,
+} from "../functions/getFoodList";
+const newFoodBase = getFoodList();
+
+const newFoodListFiltered = computed(() => {
+  return getFieldWithTypes().filter((el) =>
     el.name.toLowerCase().includes(inputValue.value.toLowerCase())
   );
 });
 </script>
 
-<style>
-.foodTable {
-  padding: 20px;
-}
-</style>
+<style></style>

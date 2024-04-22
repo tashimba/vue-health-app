@@ -7,7 +7,7 @@
 import { Bar } from "vue-chartjs";
 import { daysStore } from "../main";
 
-import { defineProps } from "vue";
+// import { defineProps } from "vue";
 
 const barProps = defineProps({
   dates: {
@@ -39,8 +39,6 @@ const sumOfCaloriesForEachDay = daysStore.sumOfCaloriesForEachDay(
   barProps.dates.date1,
   barProps.dates.date2
 );
-
-console.log(sumOfCaloriesForEachDay);
 
 const chartData = {
   labels: sumOfCaloriesForEachDay.map((el) => el.day),

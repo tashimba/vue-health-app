@@ -7,7 +7,7 @@
 import { Bar } from "vue-chartjs";
 import { daysStore } from "../main";
 
-import { defineProps } from "vue";
+// import { defineProps } from "vue";
 
 const barProps = defineProps({
   dates: {
@@ -39,8 +39,6 @@ const sumOfPFCForEachDay = daysStore.sumOfPFCForEachDay(
   barProps.dates.date1,
   barProps.dates.date2
 );
-
-console.log(sumOfPFCForEachDay);
 
 const chartData = {
   labels: sumOfPFCForEachDay.map((el) => el.day),

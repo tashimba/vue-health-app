@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import { foodStore } from "../main.js";
+// import { foodStore } from "../main.js";
 import getDateString from "../functions/getDateString.js";
+import { getFoodByName } from "../functions/getFoodList.js";
 
 export const useDaysStore = defineStore("days", {
   state: () => {
@@ -78,7 +79,7 @@ export const useDaysStore = defineStore("days", {
         (d) => d.day.getTime() == this.activeDay.getTime()
       );
 
-      const foodValue = foodStore.getFoodByName(mealObj.foodName);
+      const foodValue = getFoodByName(mealObj.foodName);
       const foodObj = {
         id: Date.now(),
         data: foodValue,
@@ -87,11 +88,25 @@ export const useDaysStore = defineStore("days", {
       day.meals[mealObj.meal].food.push(foodObj);
     },
 
-    deleteMeal(dayId, mealIter, foodId) {
-      console.log(dayId, mealIter, foodId);
-
+    editMeal(dayId, mealObj, EditingFoodId) {
       const day = this.days.find((d) => d.id == dayId);
-      day.meals = day.meals.filter((meal, i) => {
+      const foodValue = getFoodByName(mealObj.foodName);
+      const foodObj = {
+        id: EditingFoodId,
+        data: foodValue,
+        weight: mealObj.weight,
+      };
+      day.meals[mealObj.meal].food = day.meals[mealObj.meal].food.map((el) => {
+        if (el.id === EditingFoodId) {
+          return { ...foodObj };
+        }
+        return el;
+      });
+    },
+
+    deleteMeal(dayId, mealIter, foodId) {
+      const day = this.days.find((d) => d.id == dayId);
+      day.meals = day.meals.map((meal, i) => {
         if (i == mealIter) {
           meal.food = meal.food.filter((food) => food.id != foodId);
         }
@@ -163,6 +178,11 @@ export const useDaysStore = defineStore("days", {
     },
   },
   getters: {
+    getCurrentDay() {
+      return this.days.find(
+        (day) => day.day.getTime() === this.activeDay.getTime()
+      );
+    },
     getSortDays() {
       return this.days.sort((a, b) => a.day - b.day);
     },

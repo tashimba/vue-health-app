@@ -40,24 +40,45 @@
                       daysStore.deleteMeal(currentDay.id, i, curFood.id)
                     "
                   ></v-icon>
+                  <v-icon
+                    icon="mdi-pencil-outline"
+                    @click.stop="
+                      openDialog = true;
+                      choosedForEditFood = curFood;
+                    "
+                  ></v-icon>
                 </template>
               </v-list-item>
 
               <v-card-actions style="display: flex; justify-content: center">
-                <ModalAddFood :meal="i"></ModalAddFood>
+                <v-btn
+                  variant="outlined"
+                  block
+                  @click="
+                    openDialog = true;
+                    choosenMeal = i;
+                  "
+                >
+                  Добавить</v-btn
+                >
               </v-card-actions>
             </v-list-group>
           </v-list>
         </v-card>
+        <ModalAddFood
+          :meal="choosenMeal"
+          v-model="openDialog"
+          :choosedForEditFood="choosedForEditFood"
+          @update:modelValue="choosedForEditFood = {}"
+        ></ModalAddFood>
       </v-card>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { reactive, ref, watch } from "vue";
 import ModalAddFood from "./ModalAddFood.vue";
-
 import { daysStore } from "../main.js";
 import parseDate from "../functions/parseDayTo_DD-MM-YYYY";
 import { storeToRefs } from "pinia";
@@ -69,6 +90,9 @@ const currentDay = ref(
   ) || new Object()
 );
 
+const openDialog = ref(false);
+const choosenMeal = ref(0);
+const choosedForEditFood = ref({});
 const mealNames = ["Завтрак", "Обед", "Ужин"];
 
 const findCurrentDay = (dayParam) => {
@@ -76,7 +100,6 @@ const findCurrentDay = (dayParam) => {
     (day) => day.day.getTime() === dayParam.getTime()
   );
 };
-
 watch(activeDay, (newValue) => {
   findCurrentDay(newValue);
 });
