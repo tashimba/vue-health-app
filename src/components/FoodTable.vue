@@ -22,17 +22,14 @@
     :headers="headers"
     :items="newFoodListFiltered"
     :search="inputValue"
-    density="compact"
   ></v-data-table>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
-import { storeToRefs } from "pinia";
 import ModalCreateFood from "./ModalCreateFood.vue";
 
 const inputValue = ref("");
-// const { fieldWithTypes } = storeToRefs(foodStore);
 
 const headers = [
   {
@@ -58,16 +55,10 @@ const headers = [
   },
 ];
 
-import {
-  getFoodList,
-  getFoodByName,
-  createFood,
-  getFieldWithTypes,
-} from "../functions/getFoodList";
-const newFoodBase = getFoodList();
+import { getFoodListWithTypes } from "../functions/FoodListFunctions.js";
 
 const newFoodListFiltered = computed(() => {
-  return getFieldWithTypes().filter((el) =>
+  return getFoodListWithTypes().filter((el) =>
     el.name.toLowerCase().includes(inputValue.value.toLowerCase())
   );
 });

@@ -5,6 +5,7 @@
 
 <script setup>
 import NavDrawer from "./components/NavDrawer.vue";
+import { ref } from "vue";
 </script>
 
 <style>

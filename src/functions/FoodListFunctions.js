@@ -4,7 +4,7 @@ const getFoodList = () => {
   const localStorageData = JSON.parse(localStorage.getItem("foodBase")) || [];
   const jsonData = foodBase;
 
-  return [...localStorageData, ...jsonData];
+  return [...jsonData, ...localStorageData];
 };
 const getFoodByName = (name) => {
   return getFoodList().find((food) => food.name === name);
@@ -13,7 +13,7 @@ const getFoodByName = (name) => {
 const createFood = (obj) => {
   localStorage.setItem("foodBase", JSON.stringify([obj]));
 };
-const getFieldWithTypes = () =>
+const getFoodListWithTypes = () =>
   getFoodList().map(
     (item) =>
       (item = {
@@ -25,4 +25,4 @@ const getFieldWithTypes = () =>
       })
   );
 
-export { getFoodList, getFoodByName, createFood, getFieldWithTypes };
+export { getFoodList, getFoodByName, createFood, getFoodListWithTypes };

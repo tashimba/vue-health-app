@@ -9,7 +9,7 @@
       <v-autocomplete
         label="Продукт"
         :items="
-          getFieldWithTypes().map((obj) =>
+          getFoodListWithTypes().map((obj) =>
             obj.name.length > 30
               ? obj.name.slice(0, 35, '...') + '...'
               : obj.name
@@ -37,7 +37,7 @@
 import { computed, ref, watch, onMounted, onUpdated, reactive } from "vue";
 // import { foodStore } from "../main.js";
 import { daysStore } from "../main.js";
-import { getFieldWithTypes } from "../functions/getFoodList.js";
+import { getFoodListWithTypes } from "../functions/FoodListFunctions.js";
 
 const props = defineProps({
   meal: Number,

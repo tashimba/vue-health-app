@@ -1,12 +1,13 @@
 import { createWebHistory, createRouter } from "vue-router";
-import MainPage from "../pages/MainPage.vue";
+import CalendarPage from "../pages/CalendarPage.vue";
 import AnalysisPage from "../pages/AnalysisPage.vue";
 import FoodsPage from "../pages/FoodsPage.vue";
+import WelcomePage from "../pages/WelcomePage.vue";
 
 const routes = [
   {
     path: "/",
-    component: MainPage,
+    component: CalendarPage,
   },
   {
     path: "/analysis",

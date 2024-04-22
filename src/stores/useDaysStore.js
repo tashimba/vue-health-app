@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 // import { foodStore } from "../main.js";
 import getDateString from "../functions/getDateString.js";
-import { getFoodByName } from "../functions/getFoodList.js";
+import { getFoodByName } from "../functions/FoodListFunctions.js";
 
 export const useDaysStore = defineStore("days", {
   state: () => {
@@ -124,9 +124,13 @@ export const useDaysStore = defineStore("days", {
               (accMeal, food) => {
                 const { proteins, carbs, fats } = food.data;
                 return {
-                  accProteins: accMeal.accProteins + parseInt(proteins),
-                  accCarbs: accMeal.accCarbs + parseInt(carbs),
-                  accFats: accMeal.accFats + parseInt(fats),
+                  accProteins:
+                    accMeal.accProteins +
+                    (parseInt(proteins) * food.weight) / 100,
+                  accCarbs:
+                    accMeal.accCarbs + (parseInt(carbs) * food.weight) / 100,
+                  accFats:
+                    accMeal.accFats + (parseInt(fats) * food.weight) / 100,
                 };
               },
               {
@@ -165,7 +169,7 @@ export const useDaysStore = defineStore("days", {
         const sumForDay = day.meals.reduce((acc, meal) => {
           const sumForMeal = meal.food.reduce((accMeal, food) => {
             const { calories } = food.data;
-            return accMeal + parseInt(calories);
+            return accMeal + (parseInt(calories) * food.weight) / 100;
           }, 0);
           return acc + sumForMeal;
         }, 0);
@@ -174,7 +178,13 @@ export const useDaysStore = defineStore("days", {
           calories: sumForDay,
         };
       });
-      return sumOfCaloriesForEachDay;
+      return {
+        sumOfCaloriesForEachDay,
+        sumOfCalories: sumOfCaloriesForEachDay.reduce(
+          (a, el) => a + el.calories,
+          0
+        ),
+      };
     },
   },
   getters: {

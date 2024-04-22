@@ -20,7 +20,7 @@
 </template>
 <script setup>
 import { reactive, ref, watch } from "vue";
-import { createFood } from "../functions/getFoodList";
+import { createFood } from "../functions/FoodListFunctions";
 
 const dialog = ref(false);
 const inputsData = reactive([
@@ -58,11 +58,7 @@ const clickAddHandler = () => {
 
   createFood(foodObj);
   dialog.value = false;
-  inputsData[0].inputValue = "";
-  inputsData[1].inputValue = "";
-  inputsData[2].inputValue = "";
-  inputsData[3].inputValue = "";
-  inputsData[4].inputValue = "";
+  inputsData.forEach((el) => (el.inputValue = ""));
 };
 
 watch(inputsData, () => {
