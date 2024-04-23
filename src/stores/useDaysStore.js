@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-// import { foodStore } from "../main.js";
+// import {    } from "../main.js";
 import getDateString from "../functions/getDateString.js";
 import { getFoodByName } from "../functions/FoodListFunctions.js";
 
@@ -53,10 +53,6 @@ export const useDaysStore = defineStore("days", {
   },
 
   actions: {
-    setActiveDay(day) {
-      this.activeDay = day;
-    },
-
     openDay(day) {
       if (this.days.find((d) => d.day.getTime() == day.getTime())) {
         this.activeDay = day;
@@ -178,13 +174,7 @@ export const useDaysStore = defineStore("days", {
           calories: sumForDay,
         };
       });
-      return {
-        sumOfCaloriesForEachDay,
-        sumOfCalories: sumOfCaloriesForEachDay.reduce(
-          (a, el) => a + el.calories,
-          0
-        ),
-      };
+      return sumOfCaloriesForEachDay;
     },
   },
   getters: {

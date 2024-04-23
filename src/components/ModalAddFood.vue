@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :model-value="modelValue"
+    :model-value="modalAddFood"
     @click:outside="closeDialog"
     class="mx-auto"
     max-width="400"
@@ -18,9 +18,6 @@
         v-model="choosenFood"
         :error-messages="choosenFoodError"
       >
-        <!-- <template v-slot:item="data">
-          <v-list-item-content v-text="data.item"></v-list-item-content>
-        </template> -->
       </v-autocomplete>
       <v-text-field
         trim
@@ -41,15 +38,15 @@ import { getFoodListWithTypes } from "../functions/FoodListFunctions.js";
 
 const props = defineProps({
   meal: Number,
-  modelValue: Boolean,
+  modalAddFood: Boolean,
   choosedForEditFood: Object,
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modalAddFood"]);
 
-const choosenFood = ref("");
-const foodWeight = ref("");
+const choosenFood = ref(props.choosedForEditFood.data?.name || "");
+const foodWeight = ref(props.choosedForEditFood.weight || "");
 
-const closeDialog = () => emit("update:modelValue", false);
+const closeDialog = () => emit("update:modalAddFood");
 const choosenFoodError = ref("");
 const foodWeightError = ref("");
 const checkInputs = () => {
@@ -82,19 +79,12 @@ const clickHandler = () => {
       props.choosedForEditFood.id
     );
   }
-  closeDialog();
   choosenFood.value = "";
   foodWeight.value = 0;
   choosenFoodError.value = "";
   foodWeightError.value = "";
+  closeDialog();
 };
-
-onUpdated(() => {
-  if (props.choosedForEditFood !== undefined) {
-    choosenFood.value = props.choosedForEditFood.data?.name;
-    foodWeight.value = props.choosedForEditFood.weight;
-  }
-});
 
 watch(choosenFood, () => {
   choosenFoodError.value = "";
@@ -103,5 +93,6 @@ watch(choosenFood, () => {
 watch(foodWeight, () => {
   foodWeightError.value = "";
 });
+console.log(props.choosedForEditFood.id);
 </script>
 <style></style>

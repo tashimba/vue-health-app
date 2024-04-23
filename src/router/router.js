@@ -2,7 +2,6 @@ import { createWebHistory, createRouter } from "vue-router";
 import CalendarPage from "../pages/CalendarPage.vue";
 import AnalysisPage from "../pages/AnalysisPage.vue";
 import FoodsPage from "../pages/FoodsPage.vue";
-import WelcomePage from "../pages/WelcomePage.vue";
 
 const routes = [
   {

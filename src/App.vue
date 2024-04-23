@@ -5,7 +5,6 @@
 
 <script setup>
 import NavDrawer from "./components/NavDrawer.vue";
-import { ref } from "vue";
 </script>
 
 <style>
@@ -14,5 +13,9 @@ import { ref } from "vue";
 }
 .paddingContent {
   padding: 20px;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
 }
 </style>

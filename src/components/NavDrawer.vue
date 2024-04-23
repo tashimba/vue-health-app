@@ -37,15 +37,5 @@ const listItems = reactive([
     route: "/foods",
   },
 ]);
-
-const rail = ref(true);
-
-const navigationValue = ref(
-  Number(sessionStorage.getItem("navigationValue")) || 0
-);
-
-watch(navigationValue, (newValue) => {
-  sessionStorage.setItem("navigationValue", newValue);
-});
 </script>
 <style></style>

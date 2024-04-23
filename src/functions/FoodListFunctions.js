@@ -10,8 +10,14 @@ const getFoodByName = (name) => {
   return getFoodList().find((food) => food.name === name);
 };
 
+const getFoodDataByName = (name) => {
+  const food = getFoodByName(name);
+  return `Название: ${food.name}\nКалории: ${food.calories}\nБелки: ${food.proteins}\nЖиры: ${food.fats}\nУглеводы: ${food.carbs}`;
+};
 const createFood = (obj) => {
-  localStorage.setItem("foodBase", JSON.stringify([obj]));
+  const foods = JSON.parse(localStorage.getItem("foodBase")) || [];
+  foods.push(obj);
+  localStorage.setItem("foodBase", JSON.stringify(foods));
 };
 const getFoodListWithTypes = () =>
   getFoodList().map(
@@ -25,4 +31,10 @@ const getFoodListWithTypes = () =>
       })
   );
 
-export { getFoodList, getFoodByName, createFood, getFoodListWithTypes };
+export {
+  getFoodList,
+  getFoodByName,
+  createFood,
+  getFoodListWithTypes,
+  getFoodDataByName,
+};

@@ -1,28 +1,27 @@
 <template>
-  <v-container fill-height fluid class="paddingContent">
-    <v-row justify="center">
-      <v-col cols="3">
-        <v-text-field
-          v-for="inputData in inputsData"
-          :label="inputData.label"
-          v-model.trim="inputData.inputValue"
-          :error-messages="inputData.errorMessage"
-        >
-        </v-text-field>
-        <v-select
-          v-for="selectData in selectsData"
-          v-model="selectData.inputValue"
-          :items="selectData.items"
-          :label="selectData.label"
-        >
-        </v-select>
-        <v-btn @click="clickBtnHandler">Сохранить</v-btn>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="flex-center">
+    <v-card elevation="6" width="400" style="padding: 20px">
+      <v-text-field
+        v-for="inputData in inputsData"
+        :label="inputData.label"
+        v-model.trim="inputData.inputValue"
+        :error-messages="inputData.errorMessage"
+      >
+      </v-text-field>
+      <v-select
+        v-for="selectData in selectsData"
+        v-model="selectData.inputValue"
+        :items="selectData.items"
+        :label="selectData.label"
+        :error-messages="selectData.errorMessage"
+      >
+      </v-select>
+      <v-btn block @click="clickBtnHandler">Сохранить</v-btn>
+    </v-card>
+  </div>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, watch } from "vue";
 const emit = defineEmits(["formSubmitted"]);
 import { personStore } from "../main.js";
 
@@ -68,7 +67,6 @@ const checkInputValues = () => {
 };
 
 const clickBtnHandler = () => {
-  console.log(selectsData[1].inputValue);
   if (checkInputValues()) {
     emit("formSubmitted");
     const data = {
@@ -81,10 +79,12 @@ const clickBtnHandler = () => {
     personStore.setData(data);
     inputsData.forEach((el) => (el.errorMessage = ""));
     selectsData.forEach((el) => (el.errorMessage = ""));
-    console.log(personStore.getNeededCalories());
   }
 };
-
-const dialog = ref(true);
+watch(inputsData, () => {
+  inputsData.forEach((el) => {
+    if (el.inputValue) el.errorMessage = "";
+  });
+});
 </script>
 <style></style>

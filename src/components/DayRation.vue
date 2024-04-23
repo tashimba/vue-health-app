@@ -1,18 +1,23 @@
 <template>
-  <div style="display: flex; justify-content: center; padding: 15px 0">
-    <div v-if="daysStore.activeDay">
+  <div class="flex-center">
+    <div>
       <div class="text-h4" style="margin-bottom: 10px">Дневной рацион</div>
       <div class="text-h5" style="margin-bottom: 40px">
         {{ parseDate(currentDay.day) }}
       </div>
 
-      <v-card class="mx-auto" style="width: 400px; padding: 5px" variant="flat">
+      <v-card
+        class="mx-auto"
+        style="width: 400px; padding: 5px"
+        variant="flat"
+        :key="refreshKey"
+      >
         <v-card
           v-for="(meal, i) in mealNames"
           style="margin-bottom: 5px"
-          variant="outlined"
+          elevation="4"
         >
-          <v-list style="padding: 10px" density="compact">
+          <v-list style="padding: 10px" density="compact" expand>
             <v-list-group>
               <template v-slot:activator="{ props }">
                 <v-list-item v-bind="props">
@@ -25,6 +30,8 @@
               <v-divider :thickness="1" class="border-opacity-25" />
 
               <v-list-item
+                variant="flat"
+                @click.stop="openDialogFoodData = true"
                 v-if="currentDay?.meals"
                 style="margin: 10px 0"
                 v-for="curFood in currentDay?.meals[i]?.food"
@@ -43,19 +50,19 @@
                   <v-icon
                     icon="mdi-pencil-outline"
                     @click.stop="
-                      openDialog = true;
+                      openDialogAddFood = true;
                       choosedForEditFood = curFood;
                     "
                   ></v-icon>
                 </template>
               </v-list-item>
 
-              <v-card-actions style="display: flex; justify-content: center">
+              <v-card-actions class="flex-center">
                 <v-btn
-                  variant="outlined"
+                  elevation="4"
                   block
                   @click="
-                    openDialog = true;
+                    openDialogAddFood = true;
                     choosenMeal = i;
                   "
                 >
@@ -66,11 +73,21 @@
           </v-list>
         </v-card>
         <ModalAddFood
+          v-if="openDialogAddFood"
           :meal="choosenMeal"
-          v-model="openDialog"
+          v-model="openDialogAddFood"
           :choosedForEditFood="choosedForEditFood"
-          @update:modelValue="choosedForEditFood = {}"
+          @update:modelValue="
+            choosedForEditFood = {};
+            openDialogAddFood = false;
+          "
         ></ModalAddFood>
+        <ModalFoodData
+          v-if="openDialogFoodData"
+          :foodName="currentDay?.meals[choosenMeal]?.food[0]?.data?.name"
+          v-model="openDialogFoodData"
+        >
+        </ModalFoodData>
       </v-card>
     </div>
   </div>
@@ -79,6 +96,7 @@
 <script setup>
 import { reactive, ref, watch } from "vue";
 import ModalAddFood from "./ModalAddFood.vue";
+import ModalFoodData from "./ModalFoodData.vue";
 import { daysStore } from "../main.js";
 import parseDate from "../functions/parseDayTo_DD-MM-YYYY";
 import { storeToRefs } from "pinia";
@@ -86,11 +104,12 @@ import { storeToRefs } from "pinia";
 const { activeDay } = storeToRefs(daysStore);
 const currentDay = ref(
   daysStore.days.find(
-    (day) => day.day.getTime() === activeDay.value.getTime()
+    (day) => day.day.getTime() === activeDay?.value.getTime()
   ) || new Object()
 );
 
-const openDialog = ref(false);
+const openDialogFoodData = ref(false);
+const openDialogAddFood = ref(false);
 const choosenMeal = ref(0);
 const choosedForEditFood = ref({});
 const mealNames = ["Завтрак", "Обед", "Ужин"];
@@ -100,7 +119,10 @@ const findCurrentDay = (dayParam) => {
     (day) => day.day.getTime() === dayParam.getTime()
   );
 };
+
+const refreshKey = ref(0);
 watch(activeDay, (newValue) => {
+  refreshKey.value++;
   findCurrentDay(newValue);
 });
 </script>

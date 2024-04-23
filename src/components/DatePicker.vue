@@ -1,8 +1,11 @@
 <template>
-  <div style="width: 50%">
+  <div class="flex-center">
     <v-date-picker
+      style="padding: 20px"
+      width="400px"
+      header="Планируемый день"
       v-model="date"
-      style="border: 1px solid rgba(0, 0, 0, 0.012)"
+      elevation="12"
     ></v-date-picker>
   </div>
 </template>
@@ -11,13 +14,13 @@
 import { ref, watch } from "vue";
 import { daysStore } from "../main.js";
 
-const date = ref(daysStore.activeDay || new Date());
-date.value.setHours(0, 0, 0, 0);
+const date = ref(daysStore.activeDay || null);
+// date.value.setHours(0, 0, 0, 0);
 watch(date, (newValue) => {
   daysStore.openDay(newValue);
 });
 
-daysStore.openDay(date.value);
+// daysStore.openDay(date.value);
 </script>
 
 <style></style>

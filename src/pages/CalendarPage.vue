@@ -1,7 +1,15 @@
 <template>
-  <div style="display: flex" class="marginDrawer paddingContent">
-    <DatePicker></DatePicker>
-    <DayRation v-if="daysStore.activeDay"></DayRation>
+  <div class="marginDrawer paddingContent">
+    <v-container>
+      <v-row>
+        <v-col>
+          <DatePicker></DatePicker>
+        </v-col>
+        <v-col v-if="daysStore.activeDay">
+          <DayRation></DayRation>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 

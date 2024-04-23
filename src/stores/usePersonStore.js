@@ -9,47 +9,54 @@ export const usePersonStore = defineStore("person", {
       weight: 0,
       height: 0,
       activity: 0,
+      date1: 0,
+      date2: 0,
     };
   },
   actions: {
     setData({ age, weight, height, activity, gender }) {
-      console.log(age, weight, height, activity, gender);
       this.age = age;
       this.weight = weight;
       this.height = height;
-      if (activity === "Минимальная") {
-        this.activity = 1.2;
-      } else if (activity === "Слабая") {
-        this.activity = 1.375;
-      } else if (activity === "Умеренная") {
-        this.activity = 1.55;
-      } else if (activity === "Тяжелая") {
-        this.activity = 1.725;
-      } else if (activity === "Экстремальная") {
-        this.activity = 1.9;
-      }
-
-      if (gender === "Мужчина") {
-        this.gender = 5;
-      } else {
-        this.gender = -161;
-      }
-
+      this.activity = activity;
+      this.gender = gender;
       this.filled = true;
+    },
+    setDateInputs(datesObj) {
+      this.date1 = datesObj.date1;
+      this.date2 = datesObj.date2;
     },
 
     getNeededCalories() {
-      console.log(
-        this.gender,
-        this.age,
-        this.weight,
-        this.height,
-        this.activity
-      );
+      let activityNumber, genderNumber;
+
+      if (this.activity === "Минимальная") {
+        activityNumber = 1.2;
+      } else if (this.activity === "Слабая") {
+        activityNumber = 1.375;
+      } else if (this.activity === "Умеренная") {
+        activityNumber = 1.55;
+      } else if (this.activity === "Тяжелая") {
+        activityNumber = 1.725;
+      } else if (this.activity === "Экстремальная") {
+        activityNumber = 1.9;
+      }
+
+      if (this.gender === "Мужчина") {
+        genderNumber = 5;
+      } else {
+        genderNumber = -161;
+      }
+
       return Math.round(
-        (this.weight * 10 + this.height * 6.25 - this.age * 5 + this.gender) *
-          this.activity
+        (this.weight * 10 + this.height * 6.25 - this.age * 5 + genderNumber) *
+          activityNumber
       );
+    },
+  },
+  getters: {
+    getPersonData() {
+      return `Пол: ${this.gender}\nВозраст: ${this.age}\nВес: ${this.weight}\nРост: ${this.height}\nАктивность: ${this.activity}`;
     },
   },
 });

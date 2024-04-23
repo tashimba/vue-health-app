@@ -1,11 +1,6 @@
 <template>
   <div style="height: 500px">
-    <Bar
-      id="my-chart-id"
-      :options="chartOptions"
-      :data="chartData"
-      :plugins="annotationPlugin"
-    />
+    <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
   </div>
 </template>
 <script setup>
@@ -52,9 +47,10 @@ ChartJS.register(annotationPlugin);
 
 const caloriesLineValue = personStore.getNeededCalories();
 
-const { sumOfCaloriesForEachDay, sumOfCalories } =
-  daysStore.sumOfCaloriesForEachDay(barProps.dates.date1, barProps.dates.date2);
-console.log(sumOfCalories);
+const sumOfCaloriesForEachDay = daysStore.sumOfCaloriesForEachDay(
+  barProps.dates.date1,
+  barProps.dates.date2
+);
 
 const chartData = {
   labels: sumOfCaloriesForEachDay.map((el) => el.day),
