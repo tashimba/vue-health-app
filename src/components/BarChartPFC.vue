@@ -1,7 +1,5 @@
 <template>
-  <div style="height: 500px">
-    <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
-  </div>
+  <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
 </template>
 <script setup>
 import { Bar } from "vue-chartjs";

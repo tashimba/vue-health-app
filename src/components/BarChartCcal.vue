@@ -1,7 +1,5 @@
 <template>
-  <div style="height: 500px">
-    <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
-  </div>
+  <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
 </template>
 <script setup>
 import { Bar } from "vue-chartjs";
@@ -65,8 +63,8 @@ const chartData = {
 
 const chartOptions = {
   responsive: true,
+
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         line1: {
@@ -78,7 +76,10 @@ const chartOptions = {
           label: {
             display: true,
             content: "Рекоменуемый уровень",
-            position: "end",
+            position: "start",
+            font: {
+              size: 10,
+            },
           },
         },
       },

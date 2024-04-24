@@ -31,29 +31,32 @@
 
               <v-list-item
                 variant="flat"
-                @click.stop="openDialogFoodData = true"
-                v-if="currentDay?.meals"
+                v-if="currentDayMeals"
                 style="margin: 10px 0"
-                v-for="curFood in currentDay?.meals[i]?.food"
-                :key="curFood.id"
+                v-for="curFood in currentDayMeals[i]?.food"
+                :key="Date.now()"
                 :title="curFood.data.name"
                 :subtitle="curFood.weight + ' грамм'"
                 :value="curFood.data.name"
               >
                 <template v-slot:append>
-                  <v-icon
-                    icon="mdi-close"
-                    @click.stop="
-                      daysStore.deleteMeal(currentDay.id, i, curFood.id)
-                    "
-                  ></v-icon>
-                  <v-icon
-                    icon="mdi-pencil-outline"
-                    @click.stop="
-                      openDialogAddFood = true;
-                      choosedForEditFood = curFood;
-                    "
-                  ></v-icon>
+                  <v-btn variant="plain" :slim="true">
+                    <v-icon
+                      icon="mdi-close"
+                      @click.stop="
+                        daysStore.deleteMeal(currentDay.id, i, curFood.id)
+                      "
+                    ></v-icon>
+                  </v-btn>
+                  <v-btn variant="plain" :slim="true">
+                    <v-icon
+                      icon="mdi-pencil-outline"
+                      @click.stop="
+                        openDialogAddFood = true;
+                        choosedForEditFood = curFood;
+                      "
+                    ></v-icon>
+                  </v-btn>
                 </template>
               </v-list-item>
 
@@ -73,28 +76,26 @@
           </v-list>
         </v-card>
         <ModalAddFood
-          v-if="openDialogAddFood"
           :meal="choosenMeal"
           v-model="openDialogAddFood"
           :choosedForEditFood="choosedForEditFood"
-          @update:modelValue="
+          @update:modalAddFood="
             choosedForEditFood = {};
             openDialogAddFood = false;
           "
         ></ModalAddFood>
-        <ModalFoodData
-          v-if="openDialogFoodData"
+        <!-- <ModalFoodData
           :foodName="currentDay?.meals[choosenMeal]?.food[0]?.data?.name"
           v-model="openDialogFoodData"
         >
-        </ModalFoodData>
+        </ModalFoodData> -->
       </v-card>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import ModalAddFood from "./ModalAddFood.vue";
 import ModalFoodData from "./ModalFoodData.vue";
 import { daysStore } from "../main.js";
@@ -113,6 +114,8 @@ const openDialogAddFood = ref(false);
 const choosenMeal = ref(0);
 const choosedForEditFood = ref({});
 const mealNames = ["Завтрак", "Обед", "Ужин"];
+
+const currentDayMeals = computed(() => currentDay.value?.meals || []);
 
 const findCurrentDay = (dayParam) => {
   currentDay.value = daysStore.days.find(

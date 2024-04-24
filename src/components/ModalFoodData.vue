@@ -16,7 +16,6 @@
   </v-dialog>
 </template>
 <script setup>
-import { ref } from "vue";
 import { getFoodDataByName } from "../functions/FoodListFunctions";
 
 const props = defineProps({
@@ -24,6 +23,6 @@ const props = defineProps({
   foodName: String,
 });
 const emit = defineEmits(["update:modelValue"]);
-const closeDialog = () => emit("update:modelValue");
+const closeDialog = () => emit("update:modelValue", false);
 </script>
 <style></style>
