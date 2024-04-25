@@ -6,49 +6,8 @@ import { getFoodByName } from "../functions/FoodListFunctions.js";
 export const useDaysStore = defineStore("days", {
   state: () => {
     return {
-      days: [
-        // {
-        //   id: 1,
-        //   day: new Date(
-        //     "Tue Apr 09 2024 00:00:00 GMT+0300 (Москва, стандартное время)"
-        //   ),
-        //   meals: [
-        //     {
-        //       food: [
-        //         {
-        //           name: "Сыр Государевъ Экстра",
-        //           calories: "328 кКал",
-        //           proteins: "23,4 г",
-        //           fats: "26,1 г",
-        //           carbs: "0 г",
-        //         },
-        //         {
-        //           name: "ущкере",
-        //           calories: "328 кКал",
-        //           proteins: "23,4 г",
-        //           fats: "26,1 г",
-        //           carbs: "0 г",
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       food: [
-        //         {
-        //           name: "Сыр 2",
-        //           calories: "328 кКал",
-        //           proteins: "23,4 г",
-        //           fats: "26,1 г",
-        //           carbs: "0 г",
-        //         },
-        //       ],
-        //     },
-        //   ],
-        // },
-      ],
+      days: [],
       activeDay: undefined,
-      // new Date(
-      //   "Tue Apr 09 2024 00:00:00 GMT+0300 (Москва, стандартное время)"
-      // ),
     };
   },
 

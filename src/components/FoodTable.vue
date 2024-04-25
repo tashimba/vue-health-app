@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center" style="height: 60px" no-gutters>
+  <v-row justify="center" no-gutters>
     <v-col>
       <ModalCreateFood></ModalCreateFood>
     </v-col>

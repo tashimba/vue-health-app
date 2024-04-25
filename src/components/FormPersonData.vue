@@ -6,6 +6,7 @@
         :label="inputData.label"
         v-model.trim="inputData.inputValue"
         :error-messages="inputData.errorMessage"
+        :rules="[checkNumberInputs(inputData)]"
       >
       </v-text-field>
       <v-select
@@ -45,7 +46,11 @@ const selectsData = reactive([
     items: ["Мужчина", "Женщина"],
   },
 ]);
-
+const checkNumberInputs = (inputData) => {
+  if (inputData.inputValue && !parseInt(inputData.inputValue))
+    return "Значение должно быть числом";
+  else return true;
+};
 const checkInputValues = () => {
   let isValid = true;
   inputsData.forEach((el) => {
@@ -54,6 +59,9 @@ const checkInputValues = () => {
       isValid = false;
     } else if (el.inputValue < 0) {
       el.errorMessage = "Значение должно быть больше нуля";
+      isValid = false;
+    }
+    if (el.inputValue && !parseInt(el.inputValue)) {
       isValid = false;
     }
   });

@@ -26,8 +26,7 @@
   </v-dialog>
 </template>
 <script setup>
-import { computed, ref, watch, onMounted, onUpdated, reactive } from "vue";
-// import { foodStore } from "../main.js";
+import { ref, watch, onUpdated } from "vue";
 import { daysStore } from "../main.js";
 import { getFoodListWithTypes } from "../functions/FoodListFunctions.js";
 
@@ -36,7 +35,6 @@ const props = defineProps({
   openDialogAddFood: Boolean,
   choosedForEditFood: Object,
 });
-console.log(props.choosedForEditFood);
 const emit = defineEmits(["update:modalAddFood"]);
 
 const choosenFood = ref("");
@@ -53,6 +51,9 @@ const checkInputs = () => {
   }
   if (!foodWeight.value) {
     foodWeightError.value = "Обязательное поле";
+    isValid = false;
+  } else if (!parseInt(foodWeight.value)) {
+    foodWeightError.value = "Значение должно быть числом";
     isValid = false;
   }
   return isValid;

@@ -80,6 +80,8 @@ const checkInputs = () => {
 };
 
 watch(dateInputs, () => {
+  dateInputsErrors.date1 = "";
+  dateInputsErrors.date2 = "";
   if (dateInputs.date1 && dateInputs.date2) {
     if (checkInputs()) {
       personStore.setDateInputs(dateInputs);

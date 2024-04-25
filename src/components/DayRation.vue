@@ -17,11 +17,11 @@
           style="margin-bottom: 5px"
           elevation="4"
         >
-          <v-list style="padding: 10px" density="compact" expand>
+          <v-list style="padding: 10px" density="compact">
             <v-list-group>
               <template v-slot:activator="{ props }">
                 <v-list-item v-bind="props">
-                  <v-list-item-title class="text-h6">{{
+                  <v-list-item-title class="text-h5">{{
                     meal
                   }}</v-list-item-title>
                 </v-list-item>
@@ -29,49 +29,52 @@
 
               <v-divider :thickness="1" class="border-opacity-25" />
 
-              <v-list-item
-                variant="flat"
+              <v-card
+                density="compact"
+                @click.stop="openDialogFoodData = true"
+                variant="tonal"
                 v-if="currentDayMeals"
                 style="margin: 10px 0"
                 v-for="curFood in currentDayMeals[i]?.food"
-                :key="Date.now()"
+                :key="curFood.id"
                 :title="curFood.data.name"
                 :subtitle="curFood.weight + ' грамм'"
                 :value="curFood.data.name"
               >
                 <template v-slot:append>
-                  <v-btn variant="plain" :slim="true">
-                    <v-icon
-                      icon="mdi-close"
-                      @click.stop="
-                        daysStore.deleteMeal(currentDay.id, i, curFood.id)
-                      "
-                    ></v-icon>
+                  <v-btn
+                    variant="plain"
+                    :slim="true"
+                    @click.stop="
+                      daysStore.deleteMeal(currentDay.id, i, curFood.id)
+                    "
+                  >
+                    <v-icon icon="mdi-close"></v-icon>
                   </v-btn>
-                  <v-btn variant="plain" :slim="true">
-                    <v-icon
-                      icon="mdi-pencil-outline"
-                      @click.stop="
-                        openDialogAddFood = true;
-                        choosedForEditFood = curFood;
-                      "
-                    ></v-icon>
+                  <v-btn
+                    variant="plain"
+                    :slim="true"
+                    icon="mdi-pencil-outline"
+                    @click.stop="
+                      openDialogAddFood = true;
+                      choosedForEditFood = curFood;
+                    "
+                  >
+                    <v-icon></v-icon>
                   </v-btn>
                 </template>
-              </v-list-item>
+              </v-card>
 
-              <v-card-actions class="flex-center">
-                <v-btn
-                  elevation="4"
-                  block
-                  @click="
-                    openDialogAddFood = true;
-                    choosenMeal = i;
-                  "
-                >
-                  Добавить</v-btn
-                >
-              </v-card-actions>
+              <v-btn
+                elevation="4"
+                block
+                @click.stop="
+                  openDialogAddFood = true;
+                  choosenMeal = i;
+                "
+              >
+                Добавить</v-btn
+              >
             </v-list-group>
           </v-list>
         </v-card>
@@ -84,18 +87,19 @@
             openDialogAddFood = false;
           "
         ></ModalAddFood>
-        <!-- <ModalFoodData
+        <ModalFoodData
           :foodName="currentDay?.meals[choosenMeal]?.food[0]?.data?.name"
           v-model="openDialogFoodData"
+          @update:modalFoodData="openDialogFoodData = false"
         >
-        </ModalFoodData> -->
+        </ModalFoodData>
       </v-card>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import ModalAddFood from "./ModalAddFood.vue";
 import ModalFoodData from "./ModalFoodData.vue";
 import { daysStore } from "../main.js";

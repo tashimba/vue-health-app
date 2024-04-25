@@ -8,11 +8,21 @@
   <v-dialog v-model="dialog" class="mx-auto" max-width="400">
     <v-card style="padding: 10px">
       <v-text-field
-        v-for="inputData in inputsData"
+        v-for="(inputData, i) in inputsData"
         :label="inputData.label"
         v-model.trim="inputData.inputValue"
         :error-messages="inputData.errorMessage"
+        :rules="[checkNumberInputs(inputData, i)]"
       ></v-text-field>
+
+      <v-alert
+        v-if="existingFoodError"
+        border="end"
+        border-color="error"
+        elevation="2"
+      >
+        {{ existingFoodError }}
+      </v-alert>
 
       <v-btn @click="clickAddHandler">Добавить</v-btn>
     </v-card>
@@ -31,20 +41,36 @@ const inputsData = reactive([
   { label: "Углеводы", inputValue: "", errorMessage: "" },
 ]);
 
+const existingFoodError = ref("");
+
 const clickBtnHandler = () => {
   dialog.value = true;
-  inputsData.forEach((el) => (el.errorMessage = ""));
+  inputsData.forEach((el) => {
+    el.inputValue = "";
+    el.errorMessage = "";
+  });
+  existingFoodError.value = "";
 };
 const checkInputValues = () => {
   let isValid = true;
-  inputsData.forEach((el) => {
+  inputsData.forEach((el, i) => {
     if (!el.inputValue) {
       el.errorMessage = "Поле обязательно для заполнения";
+      isValid = false;
+    }
+    if (i !== 0 && el.inputValue && !parseInt(el.inputValue)) {
       isValid = false;
     }
   });
   return isValid;
 };
+
+const checkNumberInputs = (inputData, i) => {
+  if (i !== 0 && inputData.inputValue && !parseInt(inputData.inputValue))
+    return "Значение должно быть числом";
+  else return true;
+};
+
 const clickAddHandler = () => {
   if (!checkInputValues()) return;
 
@@ -56,14 +82,16 @@ const clickAddHandler = () => {
     carbs: Math.abs(parseInt(inputsData[4].inputValue)),
   };
 
-  createFood(foodObj);
-  dialog.value = false;
-  inputsData.forEach((el) => (el.inputValue = ""));
+  if (createFood(foodObj) === false) {
+    existingFoodError.value = "Такой продукт уже существует";
+  } else {
+    dialog.value = false;
+    inputsData.forEach((el) => (el.inputValue = ""));
+  }
 };
 
 watch(inputsData, () => {
   inputsData.forEach((el) => {
-    2;
     if (el.inputValue) el.errorMessage = "";
   });
 });

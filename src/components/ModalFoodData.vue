@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :model-value="modelValue"
+    :model-value="openDialogFoodData"
     @click:outside="closeDialog"
     class="mx-auto"
     max-width="400"
@@ -19,10 +19,10 @@
 import { getFoodDataByName } from "../functions/FoodListFunctions";
 
 const props = defineProps({
-  modelValue: Boolean,
+  openDialogFoodData: Boolean,
   foodName: String,
 });
-const emit = defineEmits(["update:modelValue"]);
-const closeDialog = () => emit("update:modelValue", false);
+const emit = defineEmits(["update:modalFoodData"]);
+const closeDialog = () => emit("update:modalFoodData", false);
 </script>
 <style></style>

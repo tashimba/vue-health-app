@@ -15,7 +15,7 @@
   </v-layout>
 </template>
 <script setup>
-import { ref, watch, reactive } from "vue";
+import { reactive } from "vue";
 
 const listItems = reactive([
   {

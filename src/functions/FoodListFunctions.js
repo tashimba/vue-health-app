@@ -16,6 +16,10 @@ const getFoodDataByName = (name) => {
 };
 const createFood = (obj) => {
   const foods = JSON.parse(localStorage.getItem("foodBase")) || [];
+  const existingFood = foods.find((food) => food.name === obj.name);
+  if (existingFood) {
+    return false;
+  }
   foods.push(obj);
   localStorage.setItem("foodBase", JSON.stringify(foods));
 };

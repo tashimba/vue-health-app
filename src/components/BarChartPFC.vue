@@ -5,8 +5,6 @@
 import { Bar } from "vue-chartjs";
 import { daysStore } from "../main";
 
-// import { defineProps } from "vue";
-
 const barProps = defineProps({
   dates: {
     type: Object,
