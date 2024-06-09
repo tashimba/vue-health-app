@@ -41,38 +41,27 @@
                 :subtitle="curFood.weight + ' грамм'"
                 :value="curFood.data.name"
               >
-                <template v-slot:append>
+                <template #append>
                   <v-btn
                     variant="plain"
                     :slim="true"
+                    icon="mdi-close"
                     @click.stop="
                       daysStore.deleteMeal(currentDay.id, i, curFood.id)
                     "
                   >
-                    <v-icon icon="mdi-close"></v-icon>
                   </v-btn>
                   <v-btn
                     variant="plain"
                     :slim="true"
                     icon="mdi-pencil-outline"
-                    @click.stop="
-                      openDialogAddFood = true;
-                      choosedForEditFood = curFood;
-                    "
+                    @click.stop="openEditModal(curFood)"
                   >
-                    <v-icon></v-icon>
                   </v-btn>
                 </template>
               </v-card>
 
-              <v-btn
-                elevation="4"
-                block
-                @click.stop="
-                  openDialogAddFood = true;
-                  choosenMeal = i;
-                "
-              >
+              <v-btn elevation="4" block @click.stop="createFood(i)">
                 Добавить</v-btn
               >
             </v-list-group>
@@ -82,10 +71,7 @@
           :meal="choosenMeal"
           v-model="openDialogAddFood"
           :choosedForEditFood="choosedForEditFood"
-          @update:modalAddFood="
-            choosedForEditFood = {};
-            openDialogAddFood = false;
-          "
+          @update:modalAddFood="closeDialog"
         ></ModalAddFood>
         <ModalFoodData
           :foodName="currentDay?.meals[choosenMeal]?.food[0]?.data?.name"
@@ -112,6 +98,7 @@ const currentDay = ref(
     (day) => day.day.getTime() === activeDay?.value.getTime()
   ) || new Object()
 );
+const refreshKey = ref(0);
 
 const openDialogFoodData = ref(false);
 const openDialogAddFood = ref(false);
@@ -127,7 +114,21 @@ const findCurrentDay = (dayParam) => {
   );
 };
 
-const refreshKey = ref(0);
+const createFood = (i) => {
+  openDialogAddFood.value = true;
+  choosenMeal.value = i;
+};
+
+const closeDialog = () => {
+  choosedForEditFood.value = {};
+  openDialogAddFood.value = false;
+};
+
+const openEditModal = (curFood) => {
+  openDialogAddFood.value = true;
+  choosedForEditFood.value = curFood;
+};
+
 watch(activeDay, (newValue) => {
   refreshKey.value++;
   findCurrentDay(newValue);

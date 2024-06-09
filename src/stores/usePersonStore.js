@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 export const usePersonStore = defineStore("person", {
   state: () => {
     return {
-      filled: false,
+      isFilled: false,
       gender: 0,
       age: 0,
       weight: 0,
@@ -20,7 +20,7 @@ export const usePersonStore = defineStore("person", {
       this.height = height;
       this.activity = activity;
       this.gender = gender;
-      this.filled = true;
+      this.isFilled = true;
     },
     setDateInputs(datesObj) {
       this.date1 = datesObj.date1;

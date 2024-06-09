@@ -1,7 +1,7 @@
 <template>
   <div class="marginDrawer paddingContent">
-    <FormPersonData v-if="!personStore.filled"></FormPersonData>
-    <div v-if="personStore.filled">
+    <FormPersonData v-if="!personStore.isFilled"></FormPersonData>
+    <div v-if="personStore.isFilled">
       <v-row justify="center" align="center">
         <v-col cols="4">
           <v-text-field
