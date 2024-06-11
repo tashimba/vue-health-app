@@ -1,6 +1,6 @@
 <template>
   <v-btn style="width: 200px" @click="clickBtnHandler">
-    <template v-slot:prepend>
+    <template #prepend>
       <v-icon icon="mdi-hamburger-plus"></v-icon>
     </template>
     Добавить

@@ -1,9 +1,13 @@
 <template>
-  <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+  <Bar 
+    id="my-chart-id" 
+    :options="chartOptions" 
+    :data="chartData" />
 </template>
 <script setup>
 import { Bar } from "vue-chartjs";
 import { daysStore } from "../main";
+import { computed } from "vue";
 
 const barProps = defineProps({
   dates: {
@@ -31,31 +35,31 @@ ChartJS.register(
   LinearScale
 );
 
-const sumOfPFCForEachDay = daysStore.sumOfPFCForEachDay(
-  barProps.dates.date1,
-  barProps.dates.date2
+const sumOfPFCForEachDay = computed(() =>
+  daysStore.sumOfPFCForEachDay(barProps.dates.startDate, barProps.dates.endDate)
 );
 
-const chartData = {
-  labels: sumOfPFCForEachDay.map((el) => el.day),
+const chartData = computed(() => ({
+  labels: sumOfPFCForEachDay.value.map((el) => el.day),
   datasets: [
     {
       label: "Белки",
       backgroundColor: "rgba(50, 150, 255, 0.5)",
-      data: sumOfPFCForEachDay.map((el) => el.sum.proteins),
+      data: sumOfPFCForEachDay.value.map((el) => el.sum.proteins),
     },
     {
       label: "Жиры",
       backgroundColor: "rgba(50, 150, 255, 0.5)",
-      data: sumOfPFCForEachDay.map((el) => el.sum.fats),
+      data: sumOfPFCForEachDay.value.map((el) => el.sum.fats),
     },
     {
       label: "Углеводы",
       backgroundColor: "rgba(50, 150, 255, 0.5)",
-      data: sumOfPFCForEachDay.map((el) => el.sum.carbs),
+      data: sumOfPFCForEachDay.value.map((el) => el.sum.carbs),
     },
   ],
-};
+}));
+
 const chartOptions = {
   responsive: true,
 };

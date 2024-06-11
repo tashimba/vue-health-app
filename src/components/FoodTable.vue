@@ -12,7 +12,7 @@
         v-model="inputValue"
         @click:clear="inputValue = ''"
       >
-        <template v-slot:append-inner>
+        <template #append-inner>
           <v-icon icon="mdi-magnify"></v-icon>
         </template>
       </v-text-field>

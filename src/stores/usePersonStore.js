@@ -3,14 +3,14 @@ import { defineStore } from "pinia";
 export const usePersonStore = defineStore("person", {
   state: () => {
     return {
-      filled: false,
+      isFilled: false,
       gender: 0,
       age: 0,
       weight: 0,
       height: 0,
       activity: 0,
-      date1: 0,
-      date2: 0,
+      startDate: 0,
+      endDate: 0,
     };
   },
   actions: {
@@ -20,11 +20,11 @@ export const usePersonStore = defineStore("person", {
       this.height = height;
       this.activity = activity;
       this.gender = gender;
-      this.filled = true;
+      this.isFilled = true;
     },
     setDateInputs(datesObj) {
-      this.date1 = datesObj.date1;
-      this.date2 = datesObj.date2;
+      this.startDate = datesObj.startDate;
+      this.endDate = datesObj.endDate;
     },
 
     getNeededCalories() {

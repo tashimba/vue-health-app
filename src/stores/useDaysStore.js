@@ -13,7 +13,7 @@ export const useDaysStore = defineStore("days", {
 
   actions: {
     openDay(day) {
-      if (this.days.find((d) => d.day.getTime() == day.getTime())) {
+      if (this.days.find((d) => d.day.getTime() === day.getTime())) {
         this.activeDay = day;
       } else this.activeDay = this.createDay(day).day;
     },
@@ -31,7 +31,7 @@ export const useDaysStore = defineStore("days", {
 
     addMealOnDate(mealObj) {
       let day = this.days.find(
-        (d) => d.day.getTime() == this.activeDay.getTime()
+        (d) => d.day.getTime() === this.activeDay.getTime()
       );
 
       const foodValue = getFoodByName(mealObj.foodName);
@@ -44,7 +44,7 @@ export const useDaysStore = defineStore("days", {
     },
 
     editMeal(dayId, mealObj, EditingFoodId) {
-      const day = this.days.find((d) => d.id == dayId);
+      const day = this.days.find((d) => d.id === dayId);
       const foodValue = getFoodByName(mealObj.foodName);
       const foodObj = {
         id: EditingFoodId,
@@ -60,17 +60,17 @@ export const useDaysStore = defineStore("days", {
     },
 
     deleteMeal(dayId, mealIter, foodId) {
-      const day = this.days.find((d) => d.id == dayId);
+      const day = this.days.find((d) => d.id === dayId);
       day.meals = day.meals.map((meal, i) => {
-        if (i == mealIter) {
+        if (i === mealIter) {
           meal.food = meal.food.filter((food) => food.id != foodId);
         }
         return meal;
       });
     },
 
-    sumOfPFCForEachDay(date1, date2) {
-      const daysBetweenDates = this.getSortDaysBetweenDates(date1, date2);
+    sumOfPFCForEachDay(startDate, endDate) {
+      const daysBetweenDates = this.getSortDaysBetweenDates(startDate, endDate);
 
       const sumOfPFCForEachDay = daysBetweenDates.map((day) => {
         const sumForDay = day.meals.reduce(
@@ -118,8 +118,8 @@ export const useDaysStore = defineStore("days", {
       return sumOfPFCForEachDay;
     },
 
-    sumOfCaloriesForEachDay(date1, date2) {
-      const daysBetweenDates = this.getSortDaysBetweenDates(date1, date2);
+    sumOfCaloriesForEachDay(startDate, endDate) {
+      const daysBetweenDates = this.getSortDaysBetweenDates(startDate, endDate);
       const sumOfCaloriesForEachDay = daysBetweenDates.map((day) => {
         const sumForDay = day.meals.reduce((acc, meal) => {
           const sumForMeal = meal.food.reduce((accMeal, food) => {
@@ -146,9 +146,9 @@ export const useDaysStore = defineStore("days", {
       return this.days.sort((a, b) => a.day - b.day);
     },
     getSortDaysBetweenDates: (state) => {
-      return (date1, date2) => {
+      return (startDate, endDate) => {
         return state.days.filter(
-          (d) => d.day >= new Date(date1) && d.day <= new Date(date2)
+          (d) => d.day >= new Date(startDate) && d.day <= new Date(endDate)
         );
       };
     },

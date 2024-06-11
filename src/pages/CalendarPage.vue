@@ -1,5 +1,5 @@
 <template>
-  <div class="marginDrawer paddingContent">
+  <div class="margin-drawer padding-content">
     <v-container>
       <v-row>
         <v-col>

@@ -1,10 +1,14 @@
 <template>
-  <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+  <Bar 
+    id="my-chart-id" 
+    :options="chartOptions" 
+    :data="chartData" />
 </template>
 <script setup>
 import { Bar } from "vue-chartjs";
 import { daysStore } from "../main";
 import { personStore } from "../main";
+import { computed } from "vue";
 
 const barProps = defineProps({
   dates: {
@@ -45,25 +49,23 @@ ChartJS.register(annotationPlugin);
 
 const caloriesLineValue = personStore.getNeededCalories();
 
-const sumOfCaloriesForEachDay = daysStore.sumOfCaloriesForEachDay(
-  barProps.dates.date1,
-  barProps.dates.date2
+const sumOfCaloriesForEachDay = computed(() =>
+  daysStore.sumOfCaloriesForEachDay(personStore.startDate, personStore.endDate)
 );
 
-const chartData = {
-  labels: sumOfCaloriesForEachDay.map((el) => el.day),
+const chartData = computed(() => ({
+  labels: sumOfCaloriesForEachDay.value.map((el) => el.day),
   datasets: [
     {
       label: "кКалории",
       backgroundColor: "rgba(50, 150, 255, 0.5)",
-      data: sumOfCaloriesForEachDay.map((el) => el.calories),
+      data: sumOfCaloriesForEachDay.value.map((el) => el.calories),
     },
   ],
-};
+}));
 
 const chartOptions = {
   responsive: true,
-
   plugins: {
     annotation: {
       annotations: {

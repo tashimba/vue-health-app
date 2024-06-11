@@ -8,10 +8,10 @@ import NavDrawer from "./components/NavDrawer.vue";
 </script>
 
 <style>
-.marginDrawer {
+.margin-drawer {
   margin-left: 260px;
 }
-.paddingContent {
+.padding-content {
   padding: 20px;
 }
 .flex-center {

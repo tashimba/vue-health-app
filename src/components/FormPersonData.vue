@@ -1,6 +1,9 @@
 <template>
   <div class="flex-center">
-    <v-card elevation="6" width="400" style="padding: 20px">
+    <v-card 
+      elevation="6" 
+      width="400" 
+      style="padding: 20px">
       <v-text-field
         v-for="inputData in inputsData"
         :label="inputData.label"
@@ -23,9 +26,9 @@
 </template>
 <script setup>
 import { reactive, watch } from "vue";
-const emit = defineEmits(["formSubmitted"]);
 import { personStore } from "../main.js";
 
+const emit = defineEmits(["formSubmitted"]);
 const inputsData = reactive([
   { label: "Возраст", inputValue: "", errorMessage: "" },
   { label: "Рост", inputValue: "", errorMessage: "" },
@@ -91,7 +94,9 @@ const clickBtnHandler = () => {
 };
 watch(inputsData, () => {
   inputsData.forEach((el) => {
-    if (el.inputValue) el.errorMessage = "";
+    if (el.inputValue) {
+      el.errorMessage = "";
+    }
   });
 });
 </script>

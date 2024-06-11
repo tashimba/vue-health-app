@@ -1,16 +1,18 @@
 <template>
-  <div class="marginDrawer paddingContent">
-    <FormPersonData v-if="!personStore.filled"></FormPersonData>
-    <div v-if="personStore.filled">
+  <div class="margin-drawer padding-content">
+    <FormPersonData v-if="!personStore.isFilled"></FormPersonData>
+    <div v-if="personStore.isFilled">
       <v-row justify="center" align="center">
         <v-col cols="4">
           <v-text-field
             v-for="k in 2"
             :key="k"
             type="date"
-            :label="k == 1 ? 'Начало периода' : 'Конец периода'"
-            v-model="dateInputs[`date${k}`]"
-            :error-messages="dateInputsErrors[`date${k}`]"
+            :label="k === 1 ? 'Начало периода' : 'Конец периода'"
+            v-model="dateInputs[Object.keys(dateInputs)[k - 1]]"
+            :error-messages="
+              dateInputsErrors[Object.keys(dateInputsErrors)[k - 1]]
+            "
           ></v-text-field>
         </v-col>
         <v-spacer></v-spacer>
@@ -31,19 +33,16 @@
       </v-row>
 
       <v-card
-        v-if="personStore.date1 && personStore.date2"
+        v-if="personStore.startDate && personStore.endDate"
         elevation="2"
         style="margin-top: 20px; padding: 10px"
       >
         <v-row>
           <v-col>
-            <BarChartCcal
-              :key="componentKey"
-              :dates="dateInputs"
-            ></BarChartCcal>
+            <BarChartCcal :dates="dateInputs"></BarChartCcal>
           </v-col>
           <v-col>
-            <BarChartPFC :dates="dateInputs" :key="componentKey"></BarChartPFC>
+            <BarChartPFC :dates="dateInputs"></BarChartPFC>
           </v-col>
         </v-row>
       </v-card>
@@ -57,37 +56,34 @@ import FormPersonData from "../components/FormPersonData.vue";
 import { ref, reactive, watch } from "vue";
 import { personStore } from "../main.js";
 
-const componentKey = ref(0);
-
 const dateInputs = reactive({
-  date1: personStore.date1 || "",
-  date2: personStore.date2 || "",
+  startDate: personStore.startDate || "",
+  endDate: personStore.endDate || "",
 });
 
 const dateInputsErrors = reactive({
-  date1: "",
-  date2: "",
+  startDate: "",
+  endDate: "",
 });
 
 const checkInputs = () => {
-  if (dateInputs.date1 < dateInputs.date2) {
+  if (dateInputs.startDate < dateInputs.endDate) {
     return true;
   } else {
-    dateInputsErrors.date1 = "Начало периода не может быть больше конца";
-    dateInputsErrors.date2 = "Конец периода не может быть меньше начала";
+    dateInputsErrors.startDate = "Начало периода не может быть больше конца";
+    dateInputsErrors.endDate = "Конец периода не может быть меньше начала";
   }
   return false;
 };
 
 watch(dateInputs, () => {
-  dateInputsErrors.date1 = "";
-  dateInputsErrors.date2 = "";
-  if (dateInputs.date1 && dateInputs.date2) {
+  dateInputsErrors.startDate = "";
+  dateInputsErrors.endDate = "";
+  if (dateInputs.startDate && dateInputs.endDate) {
     if (checkInputs()) {
       personStore.setDateInputs(dateInputs);
-      componentKey.value++;
     } else {
-      personStore.setDateInputs({ date1: "", date2: "" });
+      personStore.setDateInputs({ startDate: "", endDate: "" });
     }
   }
 });

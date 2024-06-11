@@ -1,5 +1,5 @@
 <template>
-  <div class="marginDrawer paddingContent">
+  <div class="margin-drawer padding-content">
     <FoodTable></FoodTable>
   </div>
 </template>
