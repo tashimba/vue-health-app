@@ -55,8 +55,14 @@ export const usePersonStore = defineStore("person", {
     },
   },
   getters: {
-    getPersonData() {
-      return `Пол: ${this.gender}\nВозраст: ${this.age}\nВес: ${this.weight}\nРост: ${this.height}\nАктивность: ${this.activity}`;
+    getPersonData: (state) => {
+      return `Пол: ${state.gender}\nВозраст: ${state.age}\nВес: ${state.weight}\nРост: ${state.height}\nАктивность: ${state.activity}`;
+    },
+    getDates: (state) => {
+      return {
+        startDate: state.startDate,
+        endDate: state.endDate,
+      };
     },
   },
 });

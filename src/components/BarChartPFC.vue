@@ -7,7 +7,8 @@
 <script setup>
 import { Bar } from "vue-chartjs";
 import { daysStore } from "../main";
-import { computed } from "vue";
+import {personStore} from "../main.js";
+import { computed, ref, watch } from "vue";
 
 const barProps = defineProps({
   dates: {
@@ -35,9 +36,7 @@ ChartJS.register(
   LinearScale
 );
 
-const sumOfPFCForEachDay = computed(() =>
-  daysStore.sumOfPFCForEachDay(barProps.dates.startDate, barProps.dates.endDate)
-);
+const sumOfPFCForEachDay = ref(daysStore.sumOfPFCForEachDay(barProps.dates.startDate, barProps.dates.endDate))
 
 const chartData = computed(() => ({
   labels: sumOfPFCForEachDay.value.map((el) => el.day),
@@ -63,5 +62,10 @@ const chartData = computed(() => ({
 const chartOptions = {
   responsive: true,
 };
+
+watch(() => personStore.getDates, () => {
+  sumOfPFCForEachDay.value = daysStore.sumOfPFCForEachDay(personStore.startDate, personStore.endDate);
+})
+
 </script>
 <style></style>

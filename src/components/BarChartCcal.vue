@@ -4,19 +4,13 @@
     :options="chartOptions" 
     :data="chartData" />
 </template>
+
 <script setup>
 import { Bar } from "vue-chartjs";
 import { daysStore } from "../main";
+import { useDaysStore } from "../stores/useDaysStore";
 import { personStore } from "../main";
-import { computed } from "vue";
-
-const barProps = defineProps({
-  dates: {
-    type: Object,
-    required: true,
-  },
-});
-
+import { watch, ref, computed } from "vue";
 import {
   Chart as ChartJS,
   Title,
@@ -30,8 +24,9 @@ import {
   LineElement,
   LineController,
 } from "chart.js";
-
 import annotationPlugin from "chartjs-plugin-annotation";
+
+
 ChartJS.register(
   Title,
   Tooltip,
@@ -49,9 +44,8 @@ ChartJS.register(annotationPlugin);
 
 const caloriesLineValue = personStore.getNeededCalories();
 
-const sumOfCaloriesForEachDay = computed(() =>
-  daysStore.sumOfCaloriesForEachDay(personStore.startDate, personStore.endDate)
-);
+const sumOfCaloriesForEachDay = ref(daysStore.sumOfCaloriesForEachDay(personStore.startDate, personStore.endDate));
+
 
 const chartData = computed(() => ({
   labels: sumOfCaloriesForEachDay.value.map((el) => el.day),
@@ -88,5 +82,8 @@ const chartOptions = {
     },
   },
 };
+watch(() => personStore.getDates, () => {
+  sumOfCaloriesForEachDay.value = daysStore.sumOfCaloriesForEachDay(personStore.startDate, personStore.endDate);
+})
 </script>
 <style></style>

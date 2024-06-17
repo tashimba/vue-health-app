@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-// import {    } from "../main.js";
 import getDateString from "../functions/getDateString.js";
 import { getFoodByName } from "../functions/FoodListFunctions.js";
 
@@ -68,10 +67,25 @@ export const useDaysStore = defineStore("days", {
         return meal;
       });
     },
-
+    sumOfCaloriesForEachDay(startDate, endDate) {
+        const daysBetweenDates = this.getSortDaysBetweenDates(startDate, endDate);
+        const sumOfCaloriesForEachDay = daysBetweenDates.map((day) => {
+          const sumForDay = day.meals.reduce((acc, meal) => {
+            const sumForMeal = meal.food.reduce((accMeal, food) => {
+              const { calories } = food.data;
+              return accMeal + (parseInt(calories) * food.weight) / 100;
+            }, 0);
+            return acc + sumForMeal;
+          }, 0);
+          return {
+            day: getDateString(day.day),
+            calories: sumForDay,
+          };
+        });
+        return sumOfCaloriesForEachDay;     
+    },
     sumOfPFCForEachDay(startDate, endDate) {
       const daysBetweenDates = this.getSortDaysBetweenDates(startDate, endDate);
-
       const sumOfPFCForEachDay = daysBetweenDates.map((day) => {
         const sumForDay = day.meals.reduce(
           (acc, meal) => {
@@ -118,23 +132,7 @@ export const useDaysStore = defineStore("days", {
       return sumOfPFCForEachDay;
     },
 
-    sumOfCaloriesForEachDay(startDate, endDate) {
-      const daysBetweenDates = this.getSortDaysBetweenDates(startDate, endDate);
-      const sumOfCaloriesForEachDay = daysBetweenDates.map((day) => {
-        const sumForDay = day.meals.reduce((acc, meal) => {
-          const sumForMeal = meal.food.reduce((accMeal, food) => {
-            const { calories } = food.data;
-            return accMeal + (parseInt(calories) * food.weight) / 100;
-          }, 0);
-          return acc + sumForMeal;
-        }, 0);
-        return {
-          day: getDateString(day.day),
-          calories: sumForDay,
-        };
-      });
-      return sumOfCaloriesForEachDay;
-    },
+    
   },
   getters: {
     getCurrentDay() {
@@ -152,5 +150,6 @@ export const useDaysStore = defineStore("days", {
         );
       };
     },
+   
   },
 });
