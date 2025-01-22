@@ -4,10 +4,15 @@
       <v-list density="compact" nav>
         <v-list-item
           v-for="item in listItems"
+          :key="item.value"
           :prepend-icon="item.icon"
           :title="item.title"
           :value="item.value"
-          @click="$router.push(item.route)"
+          @click="
+            () => {
+              if ($route.path !== item.route) $router.push(item.route);
+            }
+          "
           style="padding: 15px 10px; font-size: 1.2rem"
         ></v-list-item>
       </v-list>

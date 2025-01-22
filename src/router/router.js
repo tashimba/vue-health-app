@@ -1,26 +1,26 @@
 import { createWebHistory, createRouter } from "vue-router";
-import CalendarPage from "../pages/CalendarPage.vue";
-import AnalysisPage from "../pages/AnalysisPage.vue";
-import FoodsPage from "../pages/FoodsPage.vue";
 
 const routes = [
   {
     path: "/",
-    component: CalendarPage,
+    name: "Calendar",
+    component: () => import("../pages/CalendarPage.vue"),
   },
   {
     path: "/analysis",
-    component: AnalysisPage,
+    component: () => import("../pages/AnalysisPage.vue"),
+    name: "Analysis",
   },
   {
     path: "/foods",
-    component: FoodsPage,
+    component: () => import("../pages/FoodsPage.vue"),
+    name: "Foods",
   },
 ];
 
 const router = createRouter({
-  routes,
   history: createWebHistory(),
+  routes,
 });
 
 export default router;

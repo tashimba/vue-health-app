@@ -133,6 +133,7 @@ export const useDaysStore = defineStore("days", {
           calories: sumForDay,
         };
       });
+      console.log(sumOfCaloriesForEachDay);
       return sumOfCaloriesForEachDay;
     },
   },
@@ -147,9 +148,10 @@ export const useDaysStore = defineStore("days", {
     },
     getSortDaysBetweenDates: (state) => {
       return (date1, date2) => {
-        return state.days.filter(
-          (d) => d.day >= new Date(date1) && d.day <= new Date(date2)
-        );
+        return state.days
+          .filter((d) => d.day >= new Date(date1) && d.day <= new Date(date2))
+          .filter((d) => d.meals.some((meal) => meal.length > 0))
+          .sort((a, b) => a.day - b.day);
       };
     },
   },

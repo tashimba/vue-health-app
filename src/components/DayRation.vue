@@ -61,7 +61,12 @@
                 </template>
               </v-card>
 
-              <v-btn elevation="4" block @click.stop="createFood(i)">
+              <v-btn
+                elevation="4"
+                block
+                style="margin: 10px 0 5px 0"
+                @click.stop="createFood(i)"
+              >
                 Добавить</v-btn
               >
             </v-list-group>
